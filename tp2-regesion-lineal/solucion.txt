@@ -1,0 +1,58 @@
+
+RESPUESTAS:
+
+1. Obtener la correlación entre los atributos y entre los atributos y el target.
+    - ¿Qué atributo tiene mayor correlación lineal con el target?
+        El atributo con mayor correlación con el target es MedInc (ingreso medio) con un valor de 0.69
+
+    - ¿Cuáles atributos parecen estar más correlacionados entre sí?
+        Hay una mayor correlación entre los atributos AveRooms y AveBedrms de 0.86,
+        y los atributos Latitud y Longitud con -0.92 (esta última es negativa, lo que indica
+        que cuando una aumenta la otra tiende a disminuir).
+
+
+2. Graficar los histogramas de los distintos atributos y del target. 
+    - ¿Qué forma presentan los histogramas?
+        Los histogramas presentan distintas formas, por ejemplo:
+            * MedInc y MedHouseVal tienen un sesgo hacia la derecha
+            * HouseAge, Latitude, y Longitude tienen una distribución bimodal (A DISCUTIR: ¿o multimodal?)
+            * AveRooms, AveBedrms, Population y AveOccup estan muy sesgadas a la derecha, es decir 
+              tienen una gran concentración de datos en valores bajos
+
+    - ¿Alguno muestra una distribución similar a una campana que sugiera una distribución gaussiana, sin necesidad de realizar pruebas de hipótesis?
+        En principio ninguna pareciera tener una distribución gaussiana, las que más se aproximan son
+        MedInc y MedHouseVal pero ambos presentan sesgo a la derecha
+
+
+3. Calcular la regresión lineal utilizando todos los atributos. 
+    - Con el conjunto de entrenamiento, calcular la varianza total del modelo y la varianza explicada por el modelo.
+        Varianza total del modelo: 19355.927
+        Varianza explicada por del modelo: 11794.456
+
+    - ¿Está el modelo capturando adecuadamente el comportamiento del target? Fundamente su respuesta.
+        Teniendo en cuenta el coeficiente de Pearson R2 (~0.61) y el feature con mayor correlación con el
+        target (0.69), podemos decir que el modelo sigue el comportamiento del target.
+        
+        (A DISCUTIR: no se si la pregunta es capciosa o voy bien)
+
+
+4. Calcular las métricas de MSE, MAE y R² sobre el conjunto de evaluación.
+    Error cuadrático medio (MSE): 0.531
+    Error absoluto medio (MAE): 0.527
+    R-cuadrado en test: 0.596
+
+
+5. Crear una regresión de Ridge. 
+    - Usar validación cruzada de 5 folds y tomar como métrica el MSE.
+    - Buscar el mejor valor de α en el rango [0, 12.5].
+    - Graficar el MSE en función de α.
+
+    El mejor valor de alpha para Ridge es: 6.565656565656566
+    El grafico de MSE en función de α esta en regresion.ipynb
+
+6. Comparar los resultados obtenidos entre la regresión lineal y la mejor regresión de Ridge, evaluando el conjunto de prueba.
+    - ¿Cuál de los dos modelos obtiene mejores resultados en términos de MSE y MAE? ¿Poseen suficiente diferencia como para indicar si uno es mejor que el otro?
+        En términos de MSE y MAE ambos modelos son practicamente iguales.
+
+    - ¿Qué tipo de error podría haberse reducido?
+        (mandando fruta :D) Se podría reducir el error de los residuos
