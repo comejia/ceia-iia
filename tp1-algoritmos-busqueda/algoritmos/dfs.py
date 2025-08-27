@@ -25,7 +25,7 @@ class DFS:
         goal_state = hanoi_states.StatesHanoi([], [], list_disks, max_disks=self.number_disks)
         return hanoi_states.ProblemHanoi(initial=initial_state, goal=goal_state)
 
-    def depth_first_search(self):
+    def search(self):
         frontier = [NodeHanoi(self.problem.initial)] # Stack LIFO con el nodo inicial
         explored = set() # Conjunto de estados ya visitados
         self.nodes_explored = 0

@@ -1,17 +1,17 @@
 import time
 import statistics
 import tracemalloc
+import sys
 from pathlib import Path
 
 from algoritmos.bfs import BFS
 from algoritmos.dfs import DFS
 
-ALGORITHM = "DFS"
+DEFAULT_ALGORITHM = "DFS"
 NUM_DISKS = 5
 NUM_RUNS = 10
 
 
-# Ruta al archivo actual
 current_path = Path(__file__).resolve().parent
 
 INITIAL_STATE_PATH = current_path/"simulator/initial_state.json"
@@ -22,13 +22,16 @@ def main():
     """
     Función principal para resolver el problema de la Torre de Hanoi de 5 discos con DFS.
     """
-    if ALGORITHM == "DFS":
-        search_algorithm = DFS(number_disks=NUM_DISKS)
-        solution_node, metrics = search_algorithm.depth_first_search()
+    algorithm = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_ALGORITHM
 
-    elif ALGORITHM == "BFS":
+    if algorithm == "DFS":
+        search_algorithm = DFS(number_disks=NUM_DISKS)
+    elif algorithm == "BFS":
         search_algorithm = BFS(number_disks=NUM_DISKS)
-        solution_node, metrics = search_algorithm.breadth_first_search()
+    else:
+        raise ValueError("Algoritmo no soportado. Usar 'DFS' (default) o 'BFS'.")
+
+    solution_node, metrics = search_algorithm.search()
 
     print("Métricas:")
     for key, value in metrics.items():
@@ -64,10 +67,7 @@ def run_performance_analysis(search_algorithm, num_runs: int = 10):
         tracemalloc.start()
         start_time = time.perf_counter()
 
-        if ALGORITHM == "DFS":
-            solution_node, metrics = search_algorithm.depth_first_search()
-        elif ALGORITHM == "BFS":
-            solution_node, metrics = search_algorithm.breadth_first_search()
+        solution_node, metrics = search_algorithm.search()
 
         end_time = time.perf_counter()
         current, peak = tracemalloc.get_traced_memory()
@@ -87,6 +87,7 @@ def run_performance_analysis(search_algorithm, num_runs: int = 10):
         "std_dev_cost": statistics.stdev(cost) if num_runs > 1 else None,
         "last_run_metrics": metrics
     }
+
 
 if __name__ == "__main__":
     main()
