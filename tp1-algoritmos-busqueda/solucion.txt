@@ -1,0 +1,99 @@
+Búsqueda Primero en Profundidad (DFS)
+
+1. ¿Cuáles son los PEAS de este problema? (Performance, Environment, Actuators, Sensors)
+
+Performance:
+Llegar al estado objetivo (de manera óptima, no sería el caso de DFS): 
+Todos los discos deben terminar ordenados de mayor a menor forma en la varilla derecha (y con el mínumo número de movimientos, NA para DFS).
+(Mayor a menor lo usamos de aquí en adelante para indicar la restricción de no colocar un disco más grande sobre uno más pequeño)
+
+Environment:
+Tres varillas, y cinco discos de tamaños únicos, y los discos en todas las varillas están ordenados de mayor a menor. El estado inicial posee los cinco discos en la varilla izquierda, ordenados por tamaño de mayor a menor.
+
+Actuators:
+Mover discos entre varillas, respetando que solo se puede mover un disco a la vez.
+Cada movimiento consiste en tomar el disco superior de una de las varillas y moverlo a otra, o sobre una varilla vacía.
+
+Sensors:
+El agente percibe cuántos discos hay y en qué orden se encuentran en cada varilla.
+
+
+2. ¿Cuáles son las propiedades del entorno de trabajo?
+    - Totalmente observable: los sensores del agente tienen acceso completo a todo el estado relevante del entorno en todo momento.
+    - Determinista: el siguiente estado del entorno está completamente determinado por el estado actual y la acción del agente.
+    - Secuencial: las acciones actuales influyen en situaciones futuras
+    - Estático: el entorno no cambia mientras el agente está decidiendo qué hacer.
+    - Discreto: el entorno tiene un número finito de percepciones, acciones y estados claramente definidos.
+    - De agente individual: solo hay un agente que toma decisiones relevantes.
+    - Conocido: el agente conoce las reglas, los efectos de sus acciones y puede predecir resultados.
+
+
+3. En el contexto de este problema, defina los siguientes conceptos:
+    - Estado: Representa la configuración específica de los discos en las varillas en un momento dado
+                Usamos la clase # StatesHanoi de aima_libs
+
+    - Espacio de estados: Conjunto de todos los estados posibles. Para 5 discos, existen 3ˆ5 = 243 posibles estados. 
+        (ya que cada disco puede estar en una de las tres varillas).
+
+    - Árbol de búsqueda: Es una representación de las secuencias de acciones que el agente podría tomar desde el estado inicial.
+        Cada nodo en el árbol corresponde a un estado alcanzable, y las ramas, las acciones válidas para pasar de un estado a otro.
+        Usamos # tree_hanoi.py, donde cada NodeHanoi es un nodo del árbol de búsqueda.
+
+    - Nodo de búsqueda: Un nodo de búsqueda es una estructura de datos dentro del árbol de búsqueda. 
+        Contiene toda la información necesaria sobre la búsqueda, para un estado particular.
+        Usamos la clase # NodeHanoi, contiene el estado del nodo, el padre, la acción 
+        realizada para llegar a este nodo y su profundidad en el árbol. 
+
+    - Objetivo: Estado en el que todos discos están ordenados de mayor a menor, en la varilla derecha.
+        # hanoi_states.StatesHanoi([], [], list_disks, max_disks=5), list_disks = [5, 4, 3, 2, 1]
+
+    - Acción: Mover el disco superior de una varilla a otra. Siempre que sea permitido.
+        # ProblemHanoi.actions devuelve todas las acciones posibles que se pueden ejecutar desde un estado dado 
+
+    - Frontera: Es la colección de nodos generados por el algoritmo de búsqueda pero que aún no han sido explorados o "expandidos". 
+        Estos son los candidatos para el próximo paso en la búsqueda.
+        # frontier = [NodeHanoi(self.problem.initial)] # La inicializamos como una lista, conteniendo el nodo raíz o estado inicial 
+        # en el marco de la búsqueda DFS la usamos como un Stack o lista LIFO 
+
+
+4. Implemente algún método de búsqueda. Podés elegir cualquiera excepto búsqueda en anchura (breadth-first search),
+que ya fue desarrollada en clase. Sos libre de utilizar cualquiera de los algoritmos vistos, o incluso explorar nuevos.
+
+Ver # class DFS
+
+
+5. ¿Cuál es la complejidad teórica en tiempo y memoria del algoritmo elegido (DFS)?
+
+    - Complejidad en tiempo: 
+    La complejidad en el peor caso es O(b^m), donde:
+
+        - b es el número máximo de hijos por nodo.
+
+        - m es la profundidad máxima del árbol.
+    Esto se debe a que, en el peor de los casos, el algoritmo DFS explora todos los nodos hasta la máxima profundidad sin encontrar la solución.
+
+    - Complejidad en espacio:
+    La complejidad espacial es O(b·m). Esto se debe a que DFS necesita almacenar un camino desde la raíz hasta un nodo hoja (como máximo m nodos), además de los nodos hermanos no explorados de cada nodo en ese camino, lo que puede llegar a ser hasta b por cada nivel.
+
+
+6. A nivel de implementación, ¿cuánto tiempo y memoria utiliza el algoritmo? (Se recomienda ejecutarlo 10 veces y calcular el promedio y el desvío estándar de ambas métricas).
+
+    Resultados ejecución:
+    - Tiempo promedio de ejecución : 0.0028 segundos
+    - Desviación estandard : 0.0001 segundos
+    - Memoria promedio utilizada: 210.60 KB
+    - Desvío estándar de memoria: 8.63 KB
+
+7. Si la solución óptima es de $2^k - 1$ movimientos (siendo *k* el número de discos), ¿qué tan lejos está la solución encontrada por el algoritmo implementado de esa solución óptima? 
+
+    - Para el caso de 5 discos, la solución óptima requiere:
+
+        2^5 − 1 = 31 movimientos.
+
+    - El algoritmo implementado, en un promedio de 10 ejecuciones, realizó:
+
+        81 movimientos, con una desviación estándar de 0.0.
+       
+    Por lo tanto, la solución encontrada se aleja de la óptima en 50 movimientos por encima de la mínima cantidad necesaria.
+
+    

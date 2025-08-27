@@ -6,22 +6,25 @@ RESPUESTAS:
         El atributo con mayor correlación con el target es MedInc (ingreso medio) con un valor de 0.69
 
     - ¿Cuáles atributos parecen estar más correlacionados entre sí?
-        Hay una mayor correlación entre los atributos AveRooms y AveBedrms de 0.86,
-        y los atributos Latitud y Longitud con -0.92 (esta última es negativa, lo que indica
-        que cuando una aumenta la otra tiende a disminuir).
+        Hay una mayor correlación entre los atributos AveRooms y AveBedrms de 0.86.
+        Latitud y Longitud presentan una correlación de -0.92, lo que sugiere que al
+        aumentar una, la otra tiende a disminuir. Esto podría deberse a un patrón
+        geográfico o de muestreo; no obstante, esta correlación no implica que un
+        cambio en Latitud cause un cambio en Longitud, y viceversa.
 
 
 2. Graficar los histogramas de los distintos atributos y del target. 
     - ¿Qué forma presentan los histogramas?
         Los histogramas presentan distintas formas, por ejemplo:
             * MedInc y MedHouseVal tienen un sesgo hacia la derecha
-            * HouseAge, Latitude, y Longitude tienen una distribución bimodal (A DISCUTIR: ¿o multimodal?)
+            * HouseAge, Latitude, y Longitude tienen una distribución parecida a la bimodal. 
+                Puede estar relacionado con los valores de la muestra (geográfico, en el caso de Lat. y Long.)
             * AveRooms, AveBedrms, Population y AveOccup estan muy sesgadas a la derecha, es decir 
-              tienen una gran concentración de datos en valores bajos
+              tienen una gran concentración de datos en valores bajos, o podrían indicar outliers.
 
     - ¿Alguno muestra una distribución similar a una campana que sugiera una distribución gaussiana, sin necesidad de realizar pruebas de hipótesis?
         En principio ninguna pareciera tener una distribución gaussiana, las que más se aproximan son
-        MedInc y MedHouseVal pero ambos presentan sesgo a la derecha
+        MedInc y MedHouseVal pero ambos presentan sesgo a la derecha.
 
 
 3. Calcular la regresión lineal utilizando todos los atributos. 
@@ -30,10 +33,9 @@ RESPUESTAS:
         Varianza explicada por del modelo: 11794.456
 
     - ¿Está el modelo capturando adecuadamente el comportamiento del target? Fundamente su respuesta.
-        Teniendo en cuenta el coeficiente de Pearson R2 (~0.61) y el feature con mayor correlación con el
-        target (0.69), podemos decir que el modelo sigue el comportamiento del target.
-        
-        (A DISCUTIR: no se si la pregunta es capciosa o voy bien)
+        Teniendo en cuenta el coeficiente de Pearson R2 (~0.61), podemos decir que el modelo captura parte importante del
+        comportamiento del target (más de la mitad (61% aprox)) pero hay factores no capturados por el modelo.
+        La varianza podría estar siendo afectada por outliers, lo cual impacta el ajuste.
 
 
 4. Calcular las métricas de MSE, MAE y R² sobre el conjunto de evaluación.
@@ -55,4 +57,5 @@ RESPUESTAS:
         En términos de MSE y MAE ambos modelos son practicamente iguales.
 
     - ¿Qué tipo de error podría haberse reducido?
-        (mandando fruta :D) Se podría reducir el error de los residuos
+        Ridge sirve para reducir el error de varianza. En este caso en que los resultados son muy parecidos,
+        sugiere que el modelo ya estaba ajustado razonablemente, usando el total de atributos.
