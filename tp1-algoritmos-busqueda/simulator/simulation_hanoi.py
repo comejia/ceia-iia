@@ -9,7 +9,9 @@ import logic
 import sprites
 import synchronizer
 from constants import *
+from pathlib import Path
 
+current_path = Path(__file__).resolve().parent
 
 # ----------------------------------------------
 # Sequence Loading
@@ -22,8 +24,8 @@ def load_configuration(file_path):
 
 
 # Load initial and sequence states
-initial_state = load_configuration("./initial_state.json")
-sequence = load_configuration("./sequence.json")
+initial_state = load_configuration(current_path/"initial_state.json")
+sequence = load_configuration(current_path/"sequence.json")
 
 # These two variables are important for the animator and the sequencer
 number_of_disks = sprites.obtain_number_of_disks(initial_state)

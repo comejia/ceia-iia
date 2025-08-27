@@ -1,6 +1,7 @@
 import time
 import statistics
 import tracemalloc
+from pathlib import Path
 
 from algoritmos.bfs import BFS
 from algoritmos.dfs import DFS
@@ -8,6 +9,13 @@ from algoritmos.dfs import DFS
 ALGORITHM = "DFS"
 NUM_DISKS = 5
 NUM_RUNS = 10
+
+
+# Ruta al archivo actual
+current_path = Path(__file__).resolve().parent
+
+INITIAL_STATE_PATH = current_path/"simulator/initial_state.json"
+SEQUENCE_PATH = current_path/"simulator/sequence.json"
 
 
 def main():
@@ -44,7 +52,8 @@ def main():
     print(f"Costo: {performance_results['average_cost']}")
     print(f"Desvío estándar del costo: {performance_results['std_dev_cost']} MB")
     
-    solution_node.generate_solution_for_simulator()
+    solution_node.generate_solution_for_simulator(initial_state_file=INITIAL_STATE_PATH, 
+                                                  sequence_file=SEQUENCE_PATH)
 
 def run_performance_analysis(search_algorithm, num_runs: int = 10):
     times = []
